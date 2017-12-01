@@ -12,7 +12,7 @@ namespace Ucrs.Web
     using Microsoft.IdentityModel.Tokens;
     using System;
     using System.Text;
-
+    using Ucrs.Common;
     using Ucrs.Data;
     using Ucrs.Data.Models;
     using Ucrs.Web.Authentication;
@@ -55,7 +55,7 @@ namespace Ucrs.Web
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("Administrator", policy => policy.RequireClaim("Administrator"));
+                options.AddPolicy("ApiUser", policy => policy.RequireClaim(GlobalConstants.Strings.JwtClaimIdentifiers.Rol, GlobalConstants.Strings.JwtClaims.ApiAccess));
                 options.DefaultPolicy = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme).RequireAuthenticatedUser().Build();
             });
 
@@ -122,9 +122,9 @@ namespace Ucrs.Web
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
 
-                routes.MapSpaFallbackRoute(
-                    name: "spa-fallback",
-                    defaults: new { controller = "Home", action = "Index" });
+                //routes.MapSpaFallbackRoute(
+                //    name: "spa-fallback",
+                //    defaults: new { controller = "Home", action = "Index" });
             });
         }
     }
