@@ -28,9 +28,11 @@
             var result = await this.userManager.CreateAsync(user, password);
             if (result.Succeeded)
             {
+                // TODO: get proper message to final user
                 return this.Ok();
             }
 
+            // TODO: get proper message to final user
             return this.BadRequest();
         }
     }
