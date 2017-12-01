@@ -3,8 +3,11 @@ namespace Ucrs.Web
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.SpaServices.Webpack;
+    using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+
+    using Ucrs.Data;
 
     public class Startup
     {
@@ -18,6 +21,11 @@ namespace Ucrs.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<UcrsDbContext>(options =>
+               options.UseSqlServer(
+                   this.Configuration.GetConnectionString("DefaultConnection"),
+                   builder => builder.MigrationsAssembly("Ucrs.Web")));
+
             services.AddMvc();
         }
 
