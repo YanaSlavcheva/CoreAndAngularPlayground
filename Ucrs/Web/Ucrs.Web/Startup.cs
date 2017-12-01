@@ -2,12 +2,14 @@ namespace Ucrs.Web
 {
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.SpaServices.Webpack;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
 
     using Ucrs.Data;
+    using Ucrs.Data.Models;
 
     public class Startup
     {
@@ -25,6 +27,18 @@ namespace Ucrs.Web
                options.UseSqlServer(
                    this.Configuration.GetConnectionString("DefaultConnection"),
                    builder => builder.MigrationsAssembly("Ucrs.Web")));
+
+            services
+                .AddIdentity<User, IdentityRole>(s =>
+                {
+                    s.Password.RequireDigit = false;
+                    s.Password.RequireLowercase = false;
+                    s.Password.RequireUppercase = false;
+                    s.Password.RequireNonAlphanumeric = false;
+                    s.Password.RequiredLength = 6;
+                })
+                .AddEntityFrameworkStores<UcrsDbContext>()
+                .AddDefaultTokenProviders();
 
             services.AddMvc();
         }
